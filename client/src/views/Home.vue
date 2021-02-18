@@ -7,7 +7,7 @@
             <md-button class="md-icon-button" @click="menuVisible = !menuVisible">
               <md-icon class="fa fa-bars"></md-icon>
             </md-button>
-            <span class="md-title">Content Management System</span>
+            <span class="md-title">E-COMMERCE-CMS</span>
           </md-app-toolbar>
 
           <md-app-drawer :md-active.sync="menuVisible">
@@ -17,40 +17,27 @@
               <md-list-item>
                 <router-link to="/about">About</router-link>
               </md-list-item>
+              <md-list-item>
+                <AddProductButton/>
+              </md-list-item>
 
               <md-list-item>
-                <a @click.prevent="logout" href="#">Logout</a>
+                <a @click.prevent="logout" href="">Logout</a>
                 <!-- <span class="md-list-item-text">Sent Mail</span> -->
               </md-list-item>
 
-              <md-list-item>
-                <!-- <md-icon>delete</md-icon> -->
-                <span class="md-list-item-text">Trash</span>
-              </md-list-item>
-
-              <md-list-item>
-                <!-- <md-icon>error</md-icon> -->
-                <span class="md-list-item-text">Spam</span>
-              </md-list-item>
             </md-list>
           </md-app-drawer>
-
           <md-app-content>
-            <p>Lorem ipsum dolor sit amet, consectetur adipisicing elit. Error quibusdam, non molestias et! Earum magnam, similique, quo recusandae placeat dicta asperiores modi sint ea repudiandae maxime? Quae non explicabo, neque.</p>
-            <p>Lorem ipsum dolor sit amet, consectetur adipisicing elit. Error quibusdam, non molestias et! Earum magnam, similique, quo recusandae placeat dicta asperiores modi sint ea repudiandae maxime? Quae non explicabo, neque.</p>
-            <p>Lorem ipsum dolor sit amet, consectetur adipisicing elit. Error quibusdam, non molestias et! Earum magnam, similique, quo recusandae placeat dicta asperiores modi sint ea repudiandae maxime? Quae non explicabo, neque.</p>
-            <p>Lorem ipsum dolor sit amet, consectetur adipisicing elit. Error quibusdam, non molestias et! Earum magnam, similique, quo recusandae placeat dicta asperiores modi sint ea repudiandae maxime? Quae non explicabo, neque.</p>
-            <p>Lorem ipsum dolor sit amet, consectetur adipisicing elit. Error quibusdam, non molestias et! Earum magnam, similique, quo recusandae placeat dicta asperiores modi sint ea repudiandae maxime? Quae non explicabo, neque.</p>
-            <p>Lorem ipsum dolor sit amet, consectetur adipisicing elit. Error quibusdam, non molestias et! Earum magnam, similique, quo recusandae placeat dicta asperiores modi sint ea repudiandae maxime? Quae non explicabo, neque.</p>
-            <p>Lorem ipsum dolor sit amet, consectetur adipisicing elit. Error quibusdam, non molestias et! Earum magnam, similique, quo recusandae placeat dicta asperiores modi sint ea repudiandae maxime? Quae non explicabo, neque.</p>
-            <p>Lorem ipsum dolor sit amet, consectetur adipisicing elit. Error quibusdam, non molestias et! Earum magnam, similique, quo recusandae placeat dicta asperiores modi sint ea repudiandae maxime? Quae non explicabo, neque.</p>
-            <p>Lorem ipsum dolor sit amet, consectetur adipisicing elit. Error quibusdam, non molestias et! Earum magnam, similique, quo recusandae placeat dicta asperiores modi sint ea repudiandae maxime? Quae non explicabo, neque.</p>
-            <p>Lorem ipsum dolor sit amet, consectetur adipisicing elit. Error quibusdam, non molestias et! Earum magnam, similique, quo recusandae placeat dicta asperiores modi sint ea repudiandae maxime? Quae non explicabo, neque.</p>
-            <p>Lorem ipsum dolor sit amet, consectetur adipisicing elit. Error quibusdam, non molestias et! Earum magnam, similique, quo recusandae placeat dicta asperiores modi sint ea repudiandae maxime? Quae non explicabo, neque.</p>
-            <p>Lorem ipsum dolor sit amet, consectetur adipisicing elit. Error quibusdam, non molestias et! Earum magnam, similique, quo recusandae placeat dicta asperiores modi sint ea repudiandae maxime? Quae non explicabo, neque.</p>
-            <p>Lorem ipsum dolor sit amet, consectetur adipisicing elit. Error quibusdam, non molestias et! Earum magnam, similique, quo recusandae placeat dicta asperiores modi sint ea repudiandae maxime? Quae non explicabo, neque.</p>
-            <p>Lorem ipsum dolor sit amet, consectetur adipisicing elit. Error quibusdam, non molestias et! Earum magnam, similique, quo recusandae placeat dicta asperiores modi sint ea repudiandae maxime? Quae non explicabo, neque.</p>
-            <p>Lorem ipsum dolor sit amet, consectetur adipisicing elit. Error quibusdam, non molestias et! Earum magnam, similique, quo recusandae placeat dicta asperiores modi sint ea repudiandae maxime? Quae non explicabo, neque.</p>
+            <!---->
+            <div class="md-layout">
+              <Card
+                v-for="product in products"
+                :key="product.id"
+                :product="product"
+              />
+            </div>
+            <!---->
           </md-app-content>
         </md-app>
       </div>
@@ -59,25 +46,52 @@
 </template>
 
 <script>
+import Card from '../components/Card.vue'
+import AddProductButton from '../components/AddProductButton'
 export default {
-  props: ['setCurrentUser'],
   name: 'Home',
-  data: () => ({
-    menuVisible: false
-  }),
+  data () {
+    return {
+      menuVisible: false,
+      name: '',
+      image_url: '',
+      price: null,
+      stocks: null,
+      showAddForm: false
+    }
+  },
+  components: {
+    Card,
+    AddProductButton
+  },
+  computed: {
+    products () {
+      return this.$store.state.products.data
+    }
+  },
   methods: {
     tes () {
       this.$router.push({ path: '/about' })
     },
+
     logout () {
-      this.setCurrentUser('', '')
-      localStorage.setItem('access_token', '')
-      this.$router.push({ path: '/' })
+      this.$store.dispatch('logout')
+        .then(_ => {
+          localStorage.setItem('access_token', '')
+          this.$router.push({ path: '/' })
+        })
     }
+  },
+  created () {
+    this.$store.dispatch('fetchProducts')
   }
 }
 </script>
 
-<style>
+<style scoped>
+.md-app-content {
+  display: flex;
+  height: 90vh;
+}
 
 </style>

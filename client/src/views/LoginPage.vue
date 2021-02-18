@@ -1,6 +1,6 @@
 <template>
   <div>
-    <LoginForm :setCurrentUser="setCurrentUser"/>
+    <LoginForm/>
   </div>
 </template>
 
@@ -9,7 +9,6 @@
 import LoginForm from '../components/LoginForm.vue'
 
 export default {
-  props: ['setCurrentUser'],
   name: 'LoginPage',
   components: {
     LoginForm

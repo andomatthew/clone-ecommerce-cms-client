@@ -9,7 +9,7 @@
           </div>
           <div class="md-card-content">
             <md-field>
-              <label for="">Email</label>
+              <label for="">Email {{ test }}</label>
               <md-input v-model="email" placeholder="This is placeholder"></md-input>
             </md-field>
             <md-field>
@@ -28,37 +28,28 @@
 </template>
 
 <script>
-import axios from '../api/axios'
 export default {
-  props: ['setCurrentUser'],
   data () {
     return {
       email: '',
       password: ''
     }
   },
-  components: {
-  },
   methods: {
     loginUser () {
-      axios({
-        url: '/users/login',
-        method: 'POST',
-        data: {
-          email: this.email,
-          password: this.password
-        }
-      }).then(({ data }) => {
-        const userId = data.id
-        const userEmail = data.email
-        const accessToken = data.access_token
-
-        localStorage.setItem('access_token', accessToken)
-        this.setCurrentUser(userId, userEmail)
-        this.$router.push({ name: 'Home' })
-      }).catch((xhr, status) => {
-        console.log(xhr)
-      })
+      const user = {
+        email: this.email,
+        password: this.password
+      }
+      this.$store.dispatch('loginUser', user)
+        .then(_ => {
+          this.$router.push({ name: 'Home' })
+        })
+    }
+  },
+  computed: {
+    test () {
+      return this.$store.state.message
     }
   }
 }
@@ -73,6 +64,6 @@ export default {
   .item-2 {
     position: relative;
     background-color: #4b4b4b;
-    height: 40%;
+    height: 46.5%;
   }
 </style>
