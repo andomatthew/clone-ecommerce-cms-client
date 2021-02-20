@@ -1,18 +1,18 @@
 <template>
-<div class="md-layout-item">
+<div class=" card md-layout-item md-medium-size-33 md-small-size-50 md-xsmall-size-100">
   <md-card md-with-hover>
     <md-ripple>
       <md-card-header>
         <div class="md-title">{{product.name}}</div>
         <div class="md-subhead">Rp. {{product.price}}</div>
           </md-card-header>
-            <md-card-content>
+            <md-card-content style="display:flex;">
               Stock tersedia : {{product.stocks}}
             </md-card-content>
-          <md-card-actions>
-          <md-button @click.prevent="deleteProduct">Delete</md-button>
-          <!-- <md-button>Dialog</md-button> -->
+          <md-card-actions class="actions">
           <EditProductButton :product="product"/>
+          <DeleteProductDialog :product="product"/>
+          <UpdateStockButton :product="product" />
         </md-card-actions>
     </md-ripple>
   </md-card>
@@ -21,6 +21,8 @@
 
 <script>
 import EditProductButton from './EditProductButton.vue'
+import DeleteProductDialog from './DeleteProductDialog'
+import UpdateStockButton from './UpdateStockButton.vue'
 export default {
   props: ['product'],
   data () {
@@ -32,16 +34,18 @@ export default {
     }
   },
   components: {
-    EditProductButton
-  },
-  methods: {
-    deleteProduct () {
-      this.$store.dispatch('deleteProduct', this.product.id)
-    }
+    EditProductButton,
+    DeleteProductDialog,
+    UpdateStockButton
   }
 }
 </script>
 
-<style>
+<style scoped>
+
+.card {
+  max-width: 25%;
+  padding: 20px 0;
+}
 
 </style>

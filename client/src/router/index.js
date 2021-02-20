@@ -2,7 +2,6 @@ import Vue from 'vue'
 import VueRouter from 'vue-router'
 import LoginPage from '../views/LoginPage.vue'
 import Home from '../views/Home.vue'
-import About from '../views/About.vue'
 
 Vue.use(VueRouter)
 
@@ -16,11 +15,6 @@ const routes = [
     path: '/home',
     name: 'Home',
     component: Home
-  },
-  {
-    path: '/about',
-    name: 'About',
-    component: About
   }
 ]
 
@@ -31,8 +25,14 @@ const router = new VueRouter({
 })
 
 router.beforeEach((to, from, next) => {
-  if (to.name !== 'LoginPage' && !localStorage.getItem('access_token')) next({ name: 'LoginPage' })
-  else next()
+  console.log(to, '======')
+  if (to.name !== 'LoginPage' && !localStorage.getItem('access_token')) {
+    next({ name: 'LoginPage' })
+  } else if (localStorage.getItem('access_token') && to.name === 'LoginPage') {
+    next({ name: 'Home' })
+  } else {
+    next()
+  }
 })
 
 export default router

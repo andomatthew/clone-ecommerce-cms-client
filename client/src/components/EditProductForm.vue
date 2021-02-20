@@ -1,6 +1,8 @@
 <template>
   <div>
-    <form novalidate class="md-layout">
+    <form novalidate class="md-layout"
+      @submit.prevent="editProductDetail"
+    >
       <md-card class="md-layout-item md-size-50 md-small-size-100">
         <md-card-header>
           <div class="md-title">Edit Product Detail</div>
@@ -62,6 +64,18 @@ export default {
         price: this.product.price,
         stocks: this.product.stocks
       }
+    }
+  },
+  methods: {
+    editProductDetail () {
+      const editedProduct = {
+        name: this.form.name,
+        image_url: this.form.image_url,
+        price: this.form.price,
+        stocks: this.form.stocks,
+        id: this.product.id
+      }
+      this.$store.dispatch('editProductDetail', editedProduct)
     }
   }
 }

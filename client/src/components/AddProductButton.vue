@@ -16,7 +16,9 @@
       <md-button class="md-primary" @click="showDialog = false">Save</md-button>
     </md-dialog-actions>
   </md-dialog>
-  <md-button class="md-primary md-raised" @click="showDialog = true">Add</md-button>
+  <md-button @click="showDialog = true">
+    <md-icon class="material-icons">add</md-icon> Add Product
+  </md-button>
 </div>
 </template>
 

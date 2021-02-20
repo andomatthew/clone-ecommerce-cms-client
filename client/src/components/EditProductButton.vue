@@ -2,11 +2,7 @@
 <div>
   <md-dialog :md-active.sync="showDialog">
     <md-dialog-content>
-      <md-tabs md-dynamic-height>
-        <md-tab md-label="Edit">
-          <EditProductForm :product="product"/>
-        </md-tab>
-      </md-tabs>
+      <EditProductForm :product="product"/>
     </md-dialog-content>
 
     <md-dialog-actions>
@@ -15,7 +11,9 @@
     </md-dialog-actions>
   </md-dialog>
 
-  <md-button class="md-primary md-raised" @click="showDialog = true">Edit</md-button>
+  <md-button class="md-icon-button" @click="showDialog = true">
+    <md-icon class="material-icons md-48">mode</md-icon>
+  </md-button>
 </div>
 </template>
 

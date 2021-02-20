@@ -9,12 +9,12 @@
           </div>
           <div class="md-card-content">
             <md-field>
-              <label for="">Email {{ test }}</label>
-              <md-input v-model="email" placeholder="This is placeholder"></md-input>
+              <label for="">Email</label>
+              <md-input v-model="email" placeholder="Email"></md-input>
             </md-field>
             <md-field>
               <label for="">Password</label>
-              <md-input v-model="password" placeholder="This is also placeholder" type="password"></md-input>
+              <md-input v-model="password" placeholder="Password" type="password"></md-input>
             </md-field>
           </div>
           <md-card-actions>
@@ -45,11 +45,6 @@ export default {
         .then(_ => {
           this.$router.push({ name: 'Home' })
         })
-    }
-  },
-  computed: {
-    test () {
-      return this.$store.state.message
     }
   }
 }
