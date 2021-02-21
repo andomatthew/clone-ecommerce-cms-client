@@ -1,5 +1,5 @@
 <template>
-<div class=" card md-layout-item md-medium-size-33 md-small-size-50 md-xsmall-size-100">
+<div class="md-layout-item md-size-25 md-small-size-50 md-xsmall-size-100">
   <md-card md-with-hover>
     <md-ripple>
       <md-card-header>
@@ -43,9 +43,9 @@ export default {
 
 <style scoped>
 
-.card {
+/* .card {
   max-width: 25%;
   padding: 20px 0;
-}
+} */
 
 </style>

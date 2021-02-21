@@ -38,6 +38,10 @@
             />
             </div>
             <!---->
+             <md-snackbar :md-position="position" :md-active.sync="showSnackbar" md-persistent>
+              <span>hello</span>
+              <md-button v-if="check" class="md-primary" @click="showSnackbar = false">Retry</md-button>
+            </md-snackbar>
           </md-app-content>
         </md-app>
       </div>
@@ -58,7 +62,11 @@ export default {
       image_url: '',
       price: null,
       stocks: null,
-      showAddForm: false
+      showAddForm: false,
+      showSnackbar: false,
+      position: 'center',
+      duration: 4000,
+      message: ''
     }
   },
   components: {
@@ -72,6 +80,9 @@ export default {
     },
     user () {
       return this.$store.state.currentUser
+    },
+    getErrorStatus () {
+      return this.$store.state.homeErrorMessage
     }
   },
   methods: {
@@ -79,8 +90,15 @@ export default {
       this.$store.dispatch('logout')
         .then(_ => {
           localStorage.setItem('access_token', '')
+          localStorage.setItem('email', '')
           this.$router.push({ path: '/' })
         })
+    },
+    check () {
+      if (this.getErrorStatus) {
+        this.showSnackbar = true
+        return true
+      }
     }
   },
   created () {

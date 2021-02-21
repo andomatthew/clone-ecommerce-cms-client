@@ -2,12 +2,54 @@
 <div>
   <md-dialog :md-active.sync="showDialog">
     <md-dialog-content>
-      <EditProductForm :product="product"/>
+       <form novalidate class="md-layout"
+      @submit.prevent="editProductDetail"
+    >
+      <md-card class="md-layout-item md-size-50 md-small-size-100">
+        <md-card-content>
+          <div class="md-layout md-gutter">
+            <div class="md-layout-item md-small-size-100">
+              <md-field>
+                <label for="first-name">Name</label>
+                <md-input v-model="form.name" />
+              </md-field>
+            </div>
+
+            <div class="md-layout-item md-small-size-100">
+              <md-field >
+                <label for="last-name">image_url</label>
+                <md-input v-model="form.image_url" />
+              </md-field>
+            </div>
+          </div>
+
+          <div class="md-layout md-gutter">
+
+            <div class="md-layout-item md-small-size-100">
+              <md-field>
+                <label for="age">Price</label>
+                <md-input type="number" v-model="form.price" />
+              </md-field>
+            </div>
+
+            <div class="md-layout-item md-small-size-100">
+              <md-field>
+                <label for="age">Stocks</label>
+                <md-input type="number" v-model="form.stocks" />
+              </md-field>
+            </div>
+          </div>
+        </md-card-content>
+
+        <md-card-actions>
+          <md-button type="submit" class="md-primary">Submit</md-button>
+        </md-card-actions>
+      </md-card>
+    </form>
     </md-dialog-content>
 
     <md-dialog-actions>
       <md-button class="md-primary" @click="showDialog = false">Close</md-button>
-      <md-button class="md-primary" @click="showDialog = false">Save</md-button>
     </md-dialog-actions>
   </md-dialog>
 
@@ -18,17 +60,32 @@
 </template>
 
 <script>
-import EditProductForm from './EditProductForm'
 export default {
   name: 'DialogCustom',
   props: ['product'],
   data () {
     return {
-      showDialog: false
+      showDialog: false,
+      form: {
+        name: this.product.name,
+        image_url: this.product.image_url,
+        price: this.product.price,
+        stocks: this.product.stocks
+      }
     }
   },
-  components: {
-    EditProductForm
+  methods: {
+    editProductDetail () {
+      this.showDialog = false
+      const editedProduct = {
+        name: this.form.name,
+        image_url: this.form.image_url,
+        price: this.form.price,
+        stocks: this.form.stocks,
+        id: this.product.id
+      }
+      this.$store.dispatch('editProductDetail', editedProduct)
+    }
   }
 }
 </script>

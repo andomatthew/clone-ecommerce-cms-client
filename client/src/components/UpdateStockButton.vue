@@ -10,8 +10,10 @@
               <md-input type="number" v-model="stocks" />
             </md-field>
           </md-dialog-content>
-          <md-button class="md-primary" @click="showDialog = false">Close</md-button>
-          <md-button type="submit" class="md-primary">Tes</md-button>
+          <md-dialog-actions>
+            <md-button type="submit" class="md-primary">OK</md-button>
+            <md-button class="md-primary" @click="showDialog = false">Close</md-button>
+          </md-dialog-actions>
       </form>
     </md-dialog>
 
@@ -33,6 +35,7 @@ export default {
   },
   methods: {
     updateStocks () {
+      this.showDialog = false
       this.$store.dispatch('updateStocks', { stocks: this.stocks, id: this.product.id })
     }
   }

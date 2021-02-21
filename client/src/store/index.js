@@ -6,32 +6,35 @@ Vue.use(Vuex)
 
 export default new Vuex.Store({
   state: {
-    message: 'hello ando',
+    message: '',
     currentUser: {
       id: null,
       email: ''
     },
+    loginStatus: false,
     products: [],
-    editMessage: ''
+    homeErrorMessage: ''
   },
   mutations: {
     // menerima parameter state agar bisa diubah2 statenya
     // nama functionnya biasa disebut 'event'
 
     setCurrentUser (state, payload) {
+      state.message = null
       state.currentUser = payload
+      state.loginStatus = true
     },
     logout (state) {
       state.currentUser.id = null
       state.currentUser.email = ''
+      state.loginStatus = false
     },
     fetchProducts (state, payload) {
       state.products = payload
     },
     setNewProduct (state, payload) {
-      console.log('masuk mutation ================')
-      console.log(state, '==============')
-
+      console.log('mutation add product')
+      state.homeErrorMessage = ''
       state.products.push(payload.data)
     },
     deleteProduct (state, payload) {
@@ -65,6 +68,14 @@ export default new Vuex.Store({
     },
     setLoggedInUser (state) {
       state.currentUser.email = localStorage.getItem('email')
+    },
+    setLoginError (state, payload) {
+      state.message = ''
+      state.message = payload
+    },
+    setErrorHome (state, payload) {
+      state.homeErrorMessage = null
+      state.homeErrorMessage = payload
     }
   },
   actions: {
@@ -86,7 +97,8 @@ export default new Vuex.Store({
         localStorage.setItem('email', user.email)
         context.commit('setCurrentUser', user)
       }).catch((xhr, status) => {
-        console.log(xhr)
+        const message = xhr.response.data.message
+        context.commit('setLoginError', message)
       })
     },
     logout (context) {
@@ -111,6 +123,7 @@ export default new Vuex.Store({
         })
     },
     addProduct (context, product) {
+      console.log('axios add product')
       axios({
         url: '/products',
         method: 'POST',
@@ -118,11 +131,13 @@ export default new Vuex.Store({
         data: product
       })
         .then(product => {
-          console.log('sukses bkin produ')
+          console.log(context)
           context.commit('setNewProduct', product)
         })
         .catch((xhr, status) => {
-          console.log(xhr)
+          console.log(context, '============')
+          const message = xhr.response.data.message
+          context.commit('setErrorHome', message)
         })
     },
     deleteProduct (context, productId) {
